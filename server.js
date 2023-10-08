@@ -19,6 +19,18 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (req, res) => {
   res.send("SUCCESS");
 });
+
+//get user
+app.get("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const patient = await Patient.findById(id);
+    res.status(200).json(patient);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // fetch all schedules
 app.get("/schedules", async (req, res) => {
   try {
