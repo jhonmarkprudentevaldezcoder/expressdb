@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Patient = require("./models/patientModel");
 const Checkup = require("./models/checkupModel");
 const Rfids = require("./models/rfidModel");
+const Schedules = require("./models/scheduleModel");
 const CheckupsHistory = require("./models/checkupHistoryModel");
 
 const jwt = require("jsonwebtoken");
@@ -17,6 +18,26 @@ app.use(express.urlencoded({ extended: false }));
 //default route
 app.get("/", (req, res) => {
   res.send("SUCCESS");
+});
+// fetch all schedules
+app.get("/schedules", async (req, res) => {
+  try {
+    const schedules = await Schedules.find({});
+    res.status(200).json(schedules);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// add schedules
+app.post("/insert-schedule", async (req, res) => {
+  try {
+    const schedule = await Schedules.create(req.body);
+    res.status(200).json(schedule);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // fetch all checkups
