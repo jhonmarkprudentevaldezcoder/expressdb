@@ -42,7 +42,7 @@ app.get("/schedules", async (req, res) => {
 });
 
 // add schedules
-app.post("/insert-schedule", async (req, res) => {
+app.post("/insertschedule", async (req, res) => {
   try {
     const schedule = await Schedules.create(req.body);
     res.status(200).json(schedule);
