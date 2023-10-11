@@ -59,7 +59,7 @@ app.delete("/schedule/:id", async (req, res) => {
     if (!schedule) {
       return res
         .status(404)
-        .json({ message: `cannot find any product with ID ${id}` });
+        .json({ message: `cannot find any scheduele with ID ${id}` });
     }
     res.status(200).json(schedule);
   } catch (error) {

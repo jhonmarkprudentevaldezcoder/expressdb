@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const scheduleSchema = mongoose.Schema(
   {
+    _Id: {
+      type: String,
+    },
     name: {
       type: String,
       required: [true, "Please enter schedule name"],
