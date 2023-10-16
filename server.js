@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Patient = require("./models/patientModel");
+const Announcements = require("./models/announcemenModel");
 const Checkup = require("./models/checkupModel");
 const Rfids = require("./models/rfidModel");
 const Schedules = require("./models/scheduleModel");
@@ -99,6 +100,21 @@ app.put("/schedule/:id", async (req, res) => {
     }
     const updatedSchedule = await Schedules.findById(id);
     res.status(200).json(updatedSchedule);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get("/announcements/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const announcements = await Announcements.find({ rfid: id });
+
+    if (announcements.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    res.status(200).json(announcements);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
