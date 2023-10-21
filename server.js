@@ -43,6 +43,16 @@ app.get("/schedules", async (req, res) => {
   }
 });
 
+// fetch all schedules
+app.get("/rfids", async (req, res) => {
+  try {
+    const rfids = await Rfids.find({});
+    res.status(200).json(rfids);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // add schedules
 app.post("/insertschedule", async (req, res) => {
   try {
@@ -128,9 +138,9 @@ app.post("/register", async (req, res) => {
 
   try {
     // Check if the rfid is registered
-    const existingRfid = await Rfids.findOne({ rfid });
+    const existingRfid = await Rfids.findOne({ rfid: rfid });
 
-    if (!existingRfid) {
+    if (existingRfid) {
       try {
         // Check if the email is already taken
         const existingUser = await Users.findOne({ email });
