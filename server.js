@@ -189,7 +189,7 @@ app.post("/login", async (req, res) => {
     }
 
     // Create a JWT token
-    const token = jwt.sign({ userId: patient._id }, "your-secret-key", {
+    const token = jwt.sign({ userId: user._id }, "your-secret-key", {
       expiresIn: "1h",
     });
 
@@ -200,10 +200,10 @@ app.post("/login", async (req, res) => {
     res.status(200).json({
       message: "Authentication successful",
       token: `${token}`,
-      userId: patient._id,
-      name: patient.name,
-      email: patient.email,
-      userRfid: patient.rfid,
+      userId: user._id,
+      name: user.name,
+      email: user.email,
+      userRfid: user.rfid,
     });
   } catch (error) {
     console.log(error.message);
