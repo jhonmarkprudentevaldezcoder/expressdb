@@ -6,6 +6,7 @@ const Checkup = require("./models/checkupModel");
 const Rfids = require("./models/rfidModel");
 const Schedules = require("./models/scheduleModel");
 const CheckupsHistory = require("./models/checkupHistoryModel");
+const Users = require("./models/userModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //default route
 app.get("/", (req, res) => {
-  res.send("SUCCESS");
+  res.send("API WORKING SUCCESS");
 });
 
 //get user
@@ -127,20 +128,20 @@ app.post("/register", async (req, res) => {
 
   try {
     // Check if the rfid is registered
-    const existingRfid = await Patient.findOne({ rfid });
+    const existingRfid = await Rfids.findOne({ rfid });
 
     if (!existingRfid) {
       try {
         // Check if the email is already taken
-        const existingUser = await Patient.findOne({ email });
+        const existingUser = await Users.findOne({ email });
 
         if (existingUser) {
           return res.status(400).json({ message: "Email already taken." });
         }
 
         // If the email is not taken, create the user
-        const patient = await Patient.create(req.body);
-        res.status(200).json(patient);
+        const user = await Users.create(req.body);
+        res.status(200).json(user);
         console.log("User registered!");
       } catch (error) {
         console.log(error.message);
@@ -162,16 +163,16 @@ app.post("/login", async (req, res) => {
 
   try {
     // Find the user by email
-    const patient = await Patient.findOne({ email });
+    const user = await Users.findOne({ email });
 
-    if (!patient) {
+    if (!user) {
       return res
         .status(401)
         .json({ message: "Authentication failed. User not found." });
     }
 
     // Compare the provided password with the stored password
-    if (patient.password !== password) {
+    if (user.password !== password) {
       return res
         .status(401)
         .json({ message: "Authentication failed. Incorrect password." });
